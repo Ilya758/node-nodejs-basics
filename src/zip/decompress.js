@@ -1,6 +1,6 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { createReadStream, createWriteStream } from 'fs';
+import { createReadStream, createWriteStream, rm } from 'fs';
 import zlib from 'zlib';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -18,7 +18,10 @@ export const decompress = async () => {
   stream
     .pipe(unzip)
     .pipe(createWriteStream(filePathToDecompress))
-    .on('finish', () => console.log('finished!'));
+    .on('finish', () => {
+      rm(filePathToArchive, console.log);
+      console.log('finished!');
+    });
 };
 
 decompress();

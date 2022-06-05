@@ -1,6 +1,6 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { createReadStream, createWriteStream } from 'fs';
+import { createReadStream, createWriteStream, rm } from 'fs';
 import zlib from 'zlib';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -14,7 +14,10 @@ export const compress = async () => {
   stream
     .pipe(gZip)
     .pipe(createWriteStream(filePathToArchive))
-    .on('finish', () => console.log('finished!'));
+    .on('finish', () => {
+      rm(filePathToCompress, console.log);
+      console.log('finished!');
+    });
 };
 
 compress();
